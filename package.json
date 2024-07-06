@@ -1,0 +1,16 @@
+{
+  "name": "md_manage_ui",
+  "version": "0.0.1",
+  "description": "layui与nodejs学习示例",
+  "main": "app.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "liangzhiheng",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "http-proxy-middleware": "^3.0.0",
+    "layui": "^2.9.13"
+  }
+}

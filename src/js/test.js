@@ -1,0 +1,1 @@
+var layui = require('layui');

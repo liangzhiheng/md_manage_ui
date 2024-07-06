@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>标签管理</title>
+    <link href="../../layui/css/layui.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 搜索框 -->
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-input-group">
+                <div class="layui-input-prefix">
+                搜索
+                </div>
+                <input type="text" placeholder="带任意前置和后置内容" class="layui-input" id="search_labels">
+                <div class="layui-input-split layui-input-suffix" style="cursor: pointer;">
+                    <i id="search" class="layui-icon layui-icon-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新建与删除按钮 -->
+    <div class="layui-btn-container">  
+        <button type="button" class="layui-btn layui-btn-sm" lay-on="create_label">新建</button>
+        <button type="button" class="layui-btn layui-btn-sm" lay-on="delete_labels">批量删除</button>
+    </div>
+
+    <!-- 标签列表 -->
+    <div class="body">
+        <table class="layui-hide" id="labels" lay-filter="labels"></table>
+        <div id="labels-page"></div>
+    </div>
+    <!-- <div id="users_page"></div> -->
+</body>
+
+
+<!-- 新建用户弹窗 -->
+<form class="layui-form" id="create_label_layer" style="display: none;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-inline layui-input-wrap">
+            <input type="text" name="name" lay-verify="required" autocomplete="off" lay-affix="clear" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型</label>
+        <div class="layui-input-inline">
+            <select name="type" lay-filter="type">
+                <option value="text" selected>文本</option>
+                <option value="audio">音频</option>
+                <option value="video">视频</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-inline layui-input-wrap">
+            <textarea name="desc" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit lay-filter="create_label_submit">立即提交</button>
+        </div>
+    </div>
+</form>
+
+<!-- 标签操作按钮 -->
+<script type="text/html" id="label_operations">
+    <div class="layui-clear-space layui-inline">
+        <a class="layui-btn layui-btn-xs" lay-event="delete">删除</a>
+    </div>
+</script>
+
+
+<script type="text/html" id="label_type_dropdown">
+    <button class="layui-btn layui-btn-primary label_type_dropdown">
+      <span>{{= d.title}}</span>
+      <i class="layui-icon layui-icon-down layui-font-12"></i>
+    </button>
+  </script>
+  
+
+
+<script src="../../layui/layui.js"></script>
+<script src="../js/label.js" type="module"></script>

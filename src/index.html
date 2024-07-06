@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>主页</title>
+    <link href="./css/layui.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/msg.css">
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <!-- 导航栏 -->
+    <div class="layui-header layui-bg-cyan">
+        <div class="layui-logo layui-hide-xs layui-bg-black">LOGO图标</div>
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">导航栏</a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right" id="login" style="display: inline;">
+            <li class="layui-nav-item layui-show-sm-inline-block">
+                <a href="javascript:;">
+                    <span id="login" onclick="login_page()">登录</span>
+                </a>
+                <!-- <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">修改昵称</a></dd>
+                    <dd><a href="javascript:;">修改密码</a></dd>
+                    <dd><a href="javascript:;">登出</a></dd>
+                </dl> -->
+            </li>
+        </ul>
+
+        <ul class="layui-nav layui-layout-right" id="user" style="display: none;">
+            <li class="layui-nav-item layui-show-sm-inline-block">
+                <a href="javascript:;">
+                    <img id="user_avatar" src="" class="layui-nav-img">
+                    <span id="username">用户名称</span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">修改昵称</a></dd>
+                    <dd><a href="javascript:;">修改密码</a></dd>
+                    <dd><a href="javascript:;">登出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 菜单页面 -->
+    <div class="layui-side layui-bg-cyan">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree layui-bg-cyan">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">视频</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">视频管理</a></dd>
+                        <dd><a href="javascript:;">视频观看</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">音频</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">音频管理</a></dd>
+                        <dd><a href="javascript:;">听歌</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">文本</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">小说</a></dd>
+                        <dd><a href="javascript:;">笔记</a></dd>
+                        <dd><a href="javascript:;">文档</a></dd>
+                    </dl>
+                </li>
+                <!-- <li class="layui-nav-item"><a href="javascript:;">试做网站</a></li> -->
+                <li class="layui-nav-item">
+                    <a href="javascript:;">系统设置</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="right_iframe('./html/users.html')">用户管理</a></dd>
+                        <dd><a href="javascript:;" onclick="right_iframe('./html/labels.html')">标签管理</a></dd>
+                        <dd><a href="javascript:;">操作日志</a></dd>
+                        <dd><a href="javascript:;">系统设置</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 内容页面 -->
+    <div class="layui-body" style="padding:2% 2.5%; text-align: center;">
+        <iframe class="test" style="background-color: aliceblue; height: 100%; width: 100%; text-align: center;" id="content"></iframe>
+    </div>
+
+</div>
+</body>
+</html>
+
+<script src="./layui.js"></script>
+<script>
+
+// 登录状态检查与用户信息渲染
+var UserInfo = layui.sessionData("UserInfo");
+if (UserInfo != null) {
+    console.log("=== login ===")
+    console.log(UserInfo);
+    document.getElementById("username").innerText = UserInfo.name;
+    document.getElementById("login").style.display = "none";
+    document.getElementById("user").style.display = "inline";
+    document.getElementById("user_avatar").src = "http://127.0.0.1:3000/user/self/avatar/" + UserInfo.id;
+}
+
+// 指定右侧内容子页
+function right_iframe(src_page) {
+    document.getElementById("content").src = src_page;
+}
+
+// 根据响应弹出提示消息
+function RespMsg(code, message) {
+    if (code == 200) {
+        layui.layer.msg(message, {offset: "24px", skin: "success-msg"});
+    }else if(code == 0) {
+        layui.layer.msg("服务端未响应", {"offset": "24px", skin: "warning-msg"});
+    }else {
+        layui.layer.msg(message, {offset: "24px", skin: "failure-msg"});
+    }
+}
+
+// 修改登录用户信息
+function login(userinfo) {
+    document.getElementById("username").innerText = userinfo["name"];
+    document.getElementById("login").style.display = "none";
+    document.getElementById("user").style.display = "inline";
+    document.getElementById("user_avatar").src = "http://127.0.0.1:8000/user/self/avatar/" + userinfo["id"];
+    layui.sessionData("UserInfo", {key: "id", value: userinfo.id});
+    layui.sessionData("UserInfo", {key: "name", value: userinfo.name});
+    layui.sessionData("UserInfo", {key: "is_admin", value: userinfo.is_admin});
+    RespMsg(200, "登录成功");
+}
+
+// 弹出登录页
+function login_page() {
+    var layer = layui.layer;
+    layer.open({
+        type: 2,
+        title: "登录",
+        content: './html/login.html',
+        area: ['400px', '300px'],
+        offset: 'auto',
+        skin: "layui-layer-molv"
+    })
+}
+
+</script>

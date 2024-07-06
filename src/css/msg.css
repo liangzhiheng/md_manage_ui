@@ -1,0 +1,18 @@
+/* 各类提示消息的样式 */
+.success-msg {
+    background-color: #16baaa;
+    text-align: center;
+    color: white;
+}
+
+.warning-msg {
+    background-color: #ffb800;
+    text-align: center;
+    color: white;
+}
+
+.failure-msg {
+    background-color: #ff5722;
+    text-align: center;
+    color: white;
+}
